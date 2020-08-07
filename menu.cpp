@@ -10,22 +10,16 @@ Menu::Menu(QWidget *parent) :
 
 
 void Menu::on_StartButton_clicked() {
+
 //    ui->setupUi(this);
-
-
     MainWindow * game = new MainWindow();
     game->init_map("1");
     game->show();
-
     qDebug() << "show game";
     this->hide();
-//    setFocus();
-
-
-
-
 }
 void Menu::on_ChooseButton_clicked() {
+
     qDebug()<<ui->textEdit->toPlainText();
     MainWindow * game = new MainWindow();
     game->init_map(ui->textEdit->toPlainText());

@@ -9,6 +9,14 @@
 #include <fstream>
 using namespace std;
 
+#define wall 1
+#define ground 2
+#define box 3
+#define flag 4
+#define player 5
+#define box_on_flag 6
+#define player_on_flag 7
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
@@ -19,7 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::init_map(QString stage) {
     // read map
     current_map = stage.toInt();
-    QString file_path = ":/res/maps/map"+stage+".txt";
+//    QString file_path = ":/res/maps/map"+stage+".txt";
+    QString file_path = "./maps/map"+stage+".txt";
     QFile mapfile(file_path);
     mapfile.open(QIODevice::ReadOnly);
     QTextStream textstream(&mapfile);
@@ -50,13 +59,13 @@ void MainWindow::init_map(QString stage) {
         for (int i = 0; i < map_row*map_col; ++i)
             labels << new QLabel(this);
 
-        pix_wall.load(":/res/wall.png");             // index 1
-        pix_ground.load(":/res/ground.png");         // index 2
-        pix_box.load(":/res/box.png");         // index 3
-        pix_flag.load(":/res/flag.png");         // index 4
-        pix_player.load(":/res/player.png");   // index 5
-        pix_box_on_flag.load(":/res/box_on_flag.png");// index 6
-        pix_player_on_flag.load(":/res/player_on_flag.png");// index 7
+        pix_wall.load(":/res/wall.png");
+        pix_ground.load(":/res/ground.png");
+        pix_box.load(":/res/box.png");
+        pix_flag.load(":/res/flag.png");
+        pix_player.load(":/res/player.png");
+        pix_box_on_flag.load(":/res/box_on_flag.png");
+        pix_player_on_flag.load(":/res/player_on_flag.png");
         for (int i = 0; i < labels.length(); ++i)
             labels.at(i)->clear();
 
@@ -66,25 +75,24 @@ void MainWindow::init_map(QString stage) {
             labels.at(i)->setGeometry(base_x+((i%map_col)-1)*50,base_y+(i/map_col)*50,50,50);
             if(map[i/map_col][i%map_col]==0) {
                 labels.at(i)->clear();
-            } else if(map[i/map_col][i%map_col]==1) {
+            } else if(map[i/map_col][i%map_col]==wall) {
                 labels.at(i)->setPixmap(pix_wall);
-            } else if(map[i/map_col][i%map_col]==2) {
+            } else if(map[i/map_col][i%map_col]==ground) {
                 labels.at(i)->setPixmap(pix_ground);
-            } else if(map[i/map_col][i%map_col]==3) {
+            } else if(map[i/map_col][i%map_col]==box) {
                 labels.at(i)->setPixmap(pix_box);
-            } else if(map[i/map_col][i%map_col]==4) {
+            } else if(map[i/map_col][i%map_col]==flag) {
                 labels.at(i)->setPixmap(pix_flag);
 
-            } else if(map[i/map_col][i%map_col]==5) {
+            } else if(map[i/map_col][i%map_col]==player) {
                 labels.at(i)->setPixmap(pix_player);
                 player_row=i/map_col;
                 player_col=i%map_col;
-            } else if(map[i/map_col][i%map_col]==6) {
+            } else if(map[i/map_col][i%map_col]==box_on_flag) {
                 labels.at(i)->setPixmap(pix_box_on_flag);
-            } else if(map[i/map_col][i%map_col]==7) {
+            } else if(map[i/map_col][i%map_col]==player_on_flag) {
                 labels.at(i)->setPixmap(pix_player_on_flag);
-            }
-
+            }           
             labels.at(i)->setScaledContents(true);
         }
     }
@@ -95,20 +103,20 @@ void MainWindow::update_map() {
 
     numBoxOnFlag=0;
     for (int i = 0; i < map_row*map_col; ++i) {
-        if(map[i/map_col][i%map_col]==1) {
+        if(map[i/map_col][i%map_col]==wall) {
             labels.at(i)->setPixmap(pix_wall);
-        } else if(map[i/map_col][i%map_col]==2) {
+        } else if(map[i/map_col][i%map_col]==ground) {
             labels.at(i)->setPixmap(pix_ground);
-        } else if(map[i/map_col][i%map_col]==3) {
+        } else if(map[i/map_col][i%map_col]==box) {
             labels.at(i)->setPixmap(pix_box);
-        } else if(map[i/map_col][i%map_col]==4) {
+        } else if(map[i/map_col][i%map_col]==flag) {
             labels.at(i)->setPixmap(pix_flag);
-        } else if(map[i/map_col][i%map_col]==5) {
+        } else if(map[i/map_col][i%map_col]==player) {
             labels.at(i)->setPixmap(pix_player);
-        } else if(map[i/map_col][i%map_col]==6) {
+        } else if(map[i/map_col][i%map_col]==box_on_flag) {
             labels.at(i)->setPixmap(pix_box_on_flag);
             numBoxOnFlag++;
-        } else if(map[i/map_col][i%map_col]==7) {
+        } else if(map[i/map_col][i%map_col]==player_on_flag) {
             labels.at(i)->setPixmap(pix_player_on_flag);
         }
         labels.at(i)->setScaledContents(true);
@@ -159,60 +167,60 @@ void MainWindow::key_move(int ud,int lr) {
     // move right -> ud=0, lr=1
 
     //player
-    if(  map[player_row][player_col]==5  ) {
+    if(map[player_row][player_col]==player) {
         //player ground
-        if(map[player_row+ud][player_col+lr]==2) {
-            map[player_row][player_col]=2;
-            map[player_row+ud][player_col+lr]=5;
+        if(map[player_row+ud][player_col+lr]==ground ) {
+            map[player_row][player_col]=ground ;
+            map[player_row+ud][player_col+lr]=player;
             player_row+=ud;
             player_col+=lr;
             StepCount++;
         }
         // player box
-        else if(map[player_row+ud][player_col+lr]==3 ) {
+        else if(map[player_row+ud][player_col+lr]==box) {
             // player box ground
-            if( map[player_row+2*ud][player_col+2*lr]==2) {
-                map[player_row][player_col]= 2;
-                map[player_row+ud][player_col+lr]= 5;
-                map[player_row+2*ud][player_col+2*lr] =3;
+            if( map[player_row+2*ud][player_col+2*lr]==ground ) {
+                map[player_row][player_col]=ground ;
+                map[player_row+ud][player_col+lr]= player ;
+                map[player_row+2*ud][player_col+2*lr] =box ;
                 player_row+=ud;
                 player_col+=lr;
                 StepCount++;
             }
             //player box flag
-            else if(map[player_row+2*ud][player_col+2*lr]==4 ) {
-                map[player_row][player_col]= 2;
-                map[player_row+ud][player_col+lr]= 5;
-                map[player_row+2*ud][player_col+2*lr] =6;
+            else if(map[player_row+2*ud][player_col+2*lr]==flag  ) {
+                map[player_row][player_col]= ground ;
+                map[player_row+ud][player_col+lr]= player ;
+                map[player_row+2*ud][player_col+2*lr] =box_on_flag ;
                 player_row+=ud;
                 player_col+=lr;
                 StepCount++;
             }
         }
         //player flag
-        else if(map[player_row+ud][player_col+lr]==4) {
-            map[player_row][player_col]=2;
-            map[player_row+ud][player_col+lr]=7;
+        else if(map[player_row+ud][player_col+lr]==flag ) {
+            map[player_row][player_col]=ground ;
+            map[player_row+ud][player_col+lr]=player_on_flag ;
             player_row+=ud;
             player_col+=lr;
             StepCount++;
         }
         //player Fbox
-        else if(map[player_row+ud][player_col+lr]==6 ) {
+        else if(map[player_row+ud][player_col+lr]==box_on_flag  ) {
             //player Fbox ground
-            if(map[player_row+2*ud][player_col+2*lr]==2) {
-                map[player_row][player_col]=2;
-                map[player_row+ud][player_col+lr]=7;
-                map[player_row+2*ud][player_col+2*lr]=3;
+            if(map[player_row+2*ud][player_col+2*lr]==ground ) {
+                map[player_row][player_col]=ground ;
+                map[player_row+ud][player_col+lr]=player_on_flag ;
+                map[player_row+2*ud][player_col+2*lr]=box ;
                 player_row+=ud;
                 player_col+=lr;
                 StepCount++;
             }
             //player Fbox flag
-            else if(map[player_row+2*ud][player_col+2*lr]==4) {
-                map[player_row][player_col]=2;
-                map[player_row+ud][player_col+lr]=7;
-                map[player_row+2*ud][player_col+2*lr]=6;
+            else if(map[player_row+2*ud][player_col+2*lr]==flag ) {
+                map[player_row][player_col]=ground ;
+                map[player_row+ud][player_col+lr]=player_on_flag ;
+                map[player_row+2*ud][player_col+2*lr]=box_on_flag ;
                 player_row+=ud;
                 player_col+=lr;
                 StepCount++;
@@ -220,60 +228,60 @@ void MainWindow::key_move(int ud,int lr) {
         }
     }
     //player on flag
-    else if(map[player_row][player_col]==7) {
+    else if(map[player_row][player_col]==player_on_flag ) {
         //pf->flag
-        if(map[player_row+ud][player_col+lr]==4 ) {
-            map[player_row][player_col]=4;
-            map[player_row+ud][player_col+lr]=7;
+        if(map[player_row+ud][player_col+lr]==flag  ) {
+            map[player_row][player_col]=flag ;
+            map[player_row+ud][player_col+lr]=player_on_flag ;
             player_row+=ud;
             player_col+=lr;
             StepCount++;
         }
         //pflag >ground
-        else if(map[player_row+ud][player_col+lr]==2) {
-            map[player_row][player_col]=4;
-            map[player_row+ud][player_col+lr]=5;
+        else if(map[player_row+ud][player_col+lr]==ground ) {
+            map[player_row][player_col]=flag ;
+            map[player_row+ud][player_col+lr]=player ;
             player_row+=ud;
             player_col+=lr;
             StepCount++;
         }
         //pflag ->box
-        else if(map[player_row+ud][player_col+lr]==3) {
+        else if(map[player_row+ud][player_col+lr]==box ) {
             // ->ground
-            if(map[player_row+2*ud][player_col+2*lr]==2) {
-                map[player_row][player_col]=4;
-                map[player_row+ud][player_col+lr]=5;
-                map[player_row+2*ud][player_col+2*lr]=3;
+            if(map[player_row+2*ud][player_col+2*lr]==ground ) {
+                map[player_row][player_col]=flag ;
+                map[player_row+ud][player_col+lr]=player ;
+                map[player_row+2*ud][player_col+2*lr]=box ;
                 player_row+=ud;
                 player_col+=lr;
                 StepCount++;
             }
             // ->flag
-            else if(map[player_row-2][player_col]==4) {
-                map[player_row][player_col]=4;
-                map[player_row+ud][player_col+lr]=5;
-                map[player_row+2*ud][player_col+2*lr]=6;
+            else if(map[player_row-2][player_col]==flag ) {
+                map[player_row][player_col]=flag ;
+                map[player_row+ud][player_col+lr]=player ;
+                map[player_row+2*ud][player_col+2*lr]=box_on_flag ;
                 player_row+=ud;
                 player_col+=lr;
                 StepCount++;
             }
         }
         //pflag ->Fbox
-        else if(map[player_row+ud][player_col+lr]==6) {
+        else if(map[player_row+ud][player_col+lr]==box_on_flag ) {
             // ->ground
-            if(map[player_row+2*ud][player_col+2*lr]==2) {
-                map[player_row][player_col]=4;
-                map[player_row+ud][player_col+lr]=7;
-                map[player_row+2*ud][player_col+2*lr]=3;
+            if(map[player_row+2*ud][player_col+2*lr]==ground ) {
+                map[player_row][player_col]=flag ;
+                map[player_row+ud][player_col+lr]=player_on_flag ;
+                map[player_row+2*ud][player_col+2*lr]=box ;
                 player_row+=ud;
                 player_col+=lr;
                 StepCount++;
             }
             //->flag
-            else if(map[player_row+2*ud][player_col+2*lr]==4) {
-                map[player_row][player_col]=4;
-                map[player_row+ud][player_col+lr]=7;
-                map[player_row+2*ud][player_col+2*lr]=6;
+            else if(map[player_row+2*ud][player_col+2*lr]==flag ) {
+                map[player_row][player_col]=flag ;
+                map[player_row+ud][player_col+lr]=player_on_flag ;
+                map[player_row+2*ud][player_col+2*lr]=box_on_flag ;
                 player_row+=ud;
                 player_col+=lr;
                 StepCount++;
