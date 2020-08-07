@@ -27,8 +27,11 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::init_map(QString stage) {
     // read map
     current_map = stage.toInt();
+
+    //If you run with QT Creator, change to this line.
 //    QString file_path = ":/res/maps/map"+stage+".txt";
     QString file_path = "./maps/map"+stage+".txt";
+
     QFile mapfile(file_path);
     mapfile.open(QIODevice::ReadOnly);
     QTextStream textstream(&mapfile);
