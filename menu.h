@@ -7,19 +7,18 @@ namespace Ui {
 class Menu;
 }
 
-class Menu : public QMainWindow
-{
+class Menu : public QMainWindow {
     Q_OBJECT
 
-public:
+  public:
     explicit Menu(QWidget *parent = nullptr);
     ~Menu();
 
-public slots:
+  public slots:
     void on_StartButton_clicked();
     void on_ChooseButton_clicked();
     void on_QuitButton_clicked();
-private:
+  private:
     Ui::Menu *ui;
 //    MainWindow game;
 };

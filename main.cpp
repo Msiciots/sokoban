@@ -6,14 +6,13 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
 
     Menu menu;
     menu.show();
-    
+
 
     return a.exec();
 }
