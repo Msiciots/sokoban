@@ -9,5 +9,6 @@
         <file>res/player.png</file>
         <file>res/maps/map2.txt</file>
         <file>res/player_on_flag.png</file>
+        <file>res/menu.png</file>
     </qresource>
 </RCC>
