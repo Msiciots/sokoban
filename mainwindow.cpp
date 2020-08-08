@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <iostream>
 #include <fstream>
+#include <QFileInfo>
 using namespace std;
 
 #define wall 1
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    this->setWindowTitle("Sokoban");
     setFocus();
 }
 
@@ -48,7 +50,8 @@ void MainWindow::init_map(QString stage) {
     countWin=0;
     numBoxOnFlag=0;
     StepCount = 0;
-    ui->label->setText("Steps: "+QString::number(StepCount));
+    ui->label_level->setText("Level "+QString::number(current_map));
+    ui->label_step->setText("Steps: "+QString::number(StepCount));
 
     for(int i=0; i<map_row; ++i) {
         for(int j=0; j<map_col; ++j) {
@@ -133,14 +136,31 @@ void MainWindow::CheckWin() {
         init_map(QString::number(current_map));
     }
 }
-void MainWindow::on_Start_clicked() {
+//void MainWindow::on_undo_clicked() {
 
-    init_map("1");
+//}
+void MainWindow::on_restart_clicked() {
+
+    init_map(QString::number(current_map));
     setFocus();
 }
-void MainWindow::on_Restart_clicked() {
+void MainWindow::on_pre_clicked()
+{
+    QString file_path = "./maps/map"+QString::number(current_map-1)+".txt";
+    QFileInfo check_file(file_path);
+    if(check_file.exists() && check_file.isFile()){
+        init_map(QString::number(--current_map));
+    }
+    setFocus();
+}
 
-    init_map("2");
+void MainWindow::on_next_clicked()
+{
+    QString file_path = "./maps/map"+QString::number(current_map+1)+".txt";
+    QFileInfo check_file(file_path);
+    if(check_file.exists() && check_file.isFile()){
+        init_map(QString::number(++current_map));
+    }
     setFocus();
 }
 void MainWindow::keyPressEvent(QKeyEvent *e) {
@@ -161,7 +181,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
     }
     update_map();
     CheckWin();
-    ui->label->setText("Steps: "+QString::number(StepCount));
+    ui->label_step->setText("Steps: "+QString::number(StepCount));
 }
 void MainWindow::key_move(int ud,int lr) {
     // move up -> ud=-1, lr=0
@@ -296,6 +316,3 @@ void MainWindow::key_move(int ud,int lr) {
 MainWindow::~MainWindow() {
     delete ui;
 }
-
-
-

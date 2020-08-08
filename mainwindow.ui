@@ -6,51 +6,105 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>800</height>
+    <width>700</width>
+    <height>700</height>
    </rect>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Sokoban</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="Start">
+   <widget class="QPushButton" name="next">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>480</x>
       <y>20</y>
-      <width>89</width>
-      <height>25</height>
+      <width>111</width>
+      <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Restart:1</string>
+     <string>Next level</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Restart">
+   <widget class="QPushButton" name="restart">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>200</x>
       <y>20</y>
-      <width>89</width>
-      <height>25</height>
+      <width>111</width>
+      <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Restart:2</string>
+     <string>Restart</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="label_step">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>20</y>
+      <x>110</x>
+      <y>25</y>
       <width>67</width>
       <height>17</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>label</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_level">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>25</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pre">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>20</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Previous level</string>
     </property>
    </widget>
   </widget>
@@ -59,7 +113,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>700</width>
      <height>22</height>
     </rect>
    </property>

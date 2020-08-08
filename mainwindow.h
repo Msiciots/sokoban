@@ -4,8 +4,7 @@
 #include <QMainWindow>
 #include <QList>
 #include <QLabel>
-#include <iostream>
-#include <fstream>
+
 
 using namespace std;
 namespace Ui {
@@ -25,10 +24,16 @@ class MainWindow : public QMainWindow {
     void key_move(int ud,int lr);
 
   private slots:
-    void on_Start_clicked();
-    void on_Restart_clicked();
+    //void on_undo_clicked();
+    void on_restart_clicked();
+//    void on_pre_clicked();
+//    void on_next_clicked();
 
-  private:
+    void on_pre_clicked();
+
+    void on_next_clicked();
+
+private:
     Ui::MainWindow *ui;
 
     QPixmap pix_wall;              // index 1
