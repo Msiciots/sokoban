@@ -47,6 +47,7 @@ $ ./sokoban
 ```
 If you make some changes on codes, building before running
 ```
+$ qmake -o Makefile sokoban.pro
 $ make
 $ ./sokoban
 ```
