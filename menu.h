@@ -13,13 +13,14 @@ class Menu : public QMainWindow {
   public:
     explicit Menu(QWidget *parent = nullptr);
     ~Menu();
-
+    void checkMaps();
   public slots:
     void on_StartButton_clicked();
-    void on_ChooseButton_clicked();
+//    void on_ChooseButton_clicked();
     void on_QuitButton_clicked();
   private:
     Ui::Menu *ui;
+    int map_count;
 //    MainWindow game;
 };
 
